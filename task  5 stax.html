@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quiz Game</title>
+  <style>
+    body { font-family: Arial; padding: 20px; max-width: 600px; margin: auto; }
+    .question { margin-bottom: 15px; }
+    .options label { display: block; margin: 5px 0; }
+    #result { margin-top: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+<h2>Quiz Game</h2>
+<div id="quiz-container">
+  <div id="question" class="question"></div>
+  <div id="options" class="options"></div>
+  <button onclick="nextQuestion()">Next</button>
+  <div id="result"></div>
+</div>
+
+<script>
+  const questions = [
+    {
+      question: "What is the capital of France?",
+      options: ["Berlin", "Paris", "Rome", "Madrid"],
+      answer: "Paris"
+    },
+    {
+      question: "Which planet is known as the Red Planet?",
+      options: ["Earth", "Jupiter", "Mars", "Venus"],
+      answer: "Mars"
+    },
+    {
+      question: "Who wrote 'Romeo and Juliet'?",
+      options: ["Charles Dickens", "Mark Twain", "William Shakespeare", "Jane Austen"],
+      answer: "William Shakespeare"
+    }
+  ];
+
+  let current = 0;
+  let score = 0;
+
+  function loadQuestion() {
+    const q = questions[current];
+    document.getElementById("question").innerText = q.question;
+    const optionsHTML = q.options.map(opt =>
+      `<label><input type="radio" name="option" value="${opt}"> ${opt}</label>`
+    ).join('');
+    document.getElementById("options").innerHTML = optionsHTML;
+  }
+
+  function nextQuestion() {
+    const selected = document.querySelector('input[name="option"]:checked');
+    if (!selected) {
+      alert("Please select an answer!");
+      return;
+    }
+
+    if (selected.value === questions[current].answer) {
+      score++;
+    }
+
+    current++;
+    if (current < questions.length) {
+      loadQuestion();
+    } else {
+      document.getElementById("quiz-container").innerHTML =
+        `<h3>Quiz Completed!</h3>
+         <p>Your score: ${score} / ${questions.length}</p>`;
+    }
+  }
+
+  loadQuestion();
+</script>
+
+</body>
+</html>
